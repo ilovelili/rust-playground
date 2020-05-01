@@ -1,0 +1,18 @@
+let mut guess = String::new();
+
+io::stdin().read_line(&mut guess).expect("failed")
+
+println("hello {}", "world");
+
+add crate in cargo.toml (vscode crate extension recommended)
+
+[dependencies]
+rand = "0.7.3"
+
+update crate:
+cargo update
+
+let guess_number = match guess.trim().parse::<i32>() {
+    Ok(num) => num,
+    Err(_) => continue,
+}; // trim ...

@@ -1,0 +1,23 @@
+method and associate function (like static function) impl
+
+struct A {}
+
+impl {
+    fn method(&self) {
+
+    }
+
+    fn method_with_other_param(&self, a: u32) {
+
+    }
+
+    // associate function has no self
+    fn associate(b: u32) {
+
+    }
+}
+
+let a = A{}
+a.method();
+a.method_with_other_param(1);
+A::associate();

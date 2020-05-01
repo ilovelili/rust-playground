@@ -1,0 +1,5 @@
+cargo new hello-cargo --bin
+cargo build
+cargo run
+cargo build --release
+cargo check

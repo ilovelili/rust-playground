@@ -1,5 +1,52 @@
+------------------------------------
 cargo new hello-cargo --bin
 cargo build
 cargo run
 cargo build --release
 cargo check
+
+------------------------------------
+Here are some of the types that are Copy : (Primitive types in other languages, which are stored at stack instead of heep)
+- All the integer types, such as u32 .
+- The Boolean type, bool , with values true and false .
+- The character type, char .
+- All the floating point types, such as f64 .
+- Tuples, but only if they contain types that are also Copy . For example,
+(i32, i32) is Copy , but (i32, String) is not.
+
+we can pass a reference to avoid taking ownership of the value sometimes
+
+------------------------------------
+dangling reference
+
+fn dangle() -> &String { // dangle returns a reference to a String
+    let s = String::from("hello"); // s is a new String
+    &s // we return a reference to the String, s
+} 
+
+Because s is created inside dangle , when the code of dangle is finished, s
+will be deallocated. But we tried to return a reference to it. That means this
+reference would be pointing to an invalid String . 
+
+The solution here is to return the String directly:
+
+fn no_dangle() -> String {
+    let s = String::from("hello");
+    s
+}
+
+------------------------------------
+slice type (slice type is immutable)
+
+let s = String::from("hello");
+let slice = &s[0..2];
+let slice = &s[..2];
+
+let len = s.len();
+let slice = &s[3..len];
+let slice = &s[3..]; // same as &s[3..len]
+
+let s = "Hello, world!";
+The type of s here is &str : it’s a slice pointing to that specific point of
+the binary. This is also why string literals are immutable; &str is an immu-
+table reference.

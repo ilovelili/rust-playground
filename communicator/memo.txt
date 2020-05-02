@@ -1,0 +1,28 @@
+module naming best practice:
+
+- If a module named foo has no submodules, you should put the declara-
+tions for foo in a file named foo.rs.
+- If a module named foo does have submodules, you should put the decla-
+rations for foo in a file named foo/mod.rs.
+
+
+The default state of all code in Rust is private.
+
+we can use super to move up one module in the hierarchy from our
+current module, like this:
+super::client::connect();
+
+-------------------------------------------------------------
+test:
+
+#[cfg(test)]
+mod tests {
+    // use statement paths are relative to the crate root by default
+    use super::client;
+    #[test]
+    fn it_works() {
+        client::connect();
+    }
+}
+
+run `cargo test`

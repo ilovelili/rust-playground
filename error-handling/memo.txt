@@ -1,0 +1,50 @@
+Rust has the type Result<T, E> for recoverable
+errors (like file not found) and the panic! macro that stops execution when the program encoun-
+ters an unrecoverable errors (like divided by zero or array index out of range)
+
+------------------------------------------
+set backtrace:
+RUST_BACKTRACE=1 cargo run
+
+------------------------------------------
+unwrap:
+The Result<T, E> type has many helper methods
+defined on it to do various tasks. One of those methods, called unwrap , is a
+shortcut method that if the Result value is the Ok variant, unwrap will return the value
+inside the Ok. If the Result is the Err variant, unwrap will call the panic! macro
+
+let f = File::open("hello.txt").unwrap();
+
+------------------------------------------
+expect:
+Another method, expect , which is similar to unwrap , lets us also choose
+the panic! error message. Using expect instead of unwrap and providing good
+error messages can convey your intent and make tracking down the source
+of a panic easier.
+
+let f = File::open("hello.txt").expect("file not found");
+
+------------------------------------------
+error handling using match
+
+fn read_username_from_file() -> Result<String, Error> {
+    let f = File::open("hello.txt");
+    let mut f = match f {
+        Ok(file) => file,
+        Err(e) => return Err(e),
+    };
+    let mut s = String::new();
+    match f.read_to_string(&mut s) {
+        Ok(_) => Ok(s),
+        Err(e) => Err(e),
+    }
+}
+
+------------------------------------------
+we can use ? to simplify
+
+fn read_username_from_file() -> Result<String, Error> {
+    let mut s = String::new();
+    File::open("hello.txt")?.read_to_string(&mut s)?
+    Ok(s)
+}

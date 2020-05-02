@@ -1,0 +1,56 @@
+----------------------------------------------
+question mark operator
+
+In Rust, error handling uses Result. A typical example would be:
+
+fn halves_if_even(i: i32) -> Result<i32, Error> {
+    if i % 2 == 0 {
+        Ok(i / 2)
+    } else {
+        Err(/* something */)
+    }
+}
+
+fn do_the_thing(i: i32) -> Result<i32, Error> {
+    let i = match halves_if_even(i) {
+        Ok(i) => i,
+        Err(e) => return Err(e),
+    };
+
+    // use `i`
+}
+
+The above can be rewritten as:
+
+fn do_the_thing(i: i32) -> Result<i32, Error> {
+    let i = halves_if_even(i)?;
+    // use `i`
+}
+
+which is much more concise.
+
+In short: it unpacks the Result if OK and returns the error if not.
+One example of the magic is that this also works for Option:
+
+// Assume
+// fn halves_if_even(i: i32) -> Option<i32>
+
+fn do_the_thing(i: i32) -> Option<i32> {
+    let i = halves_if_even(i)?;
+}
+
+
+------------------------------------------------------------
+fmt:
+https://doc.rust-lang.org/std/fmt/index.html
+
+
+------------------------------------------------------------
+the placeholder in matcg
+use _ => () in match body if we don't want to list all the patterns
+
+let some_u8_value = Some(0u8);
+match some_u8_value {
+    Some(3) => println!("three"),
+    _ => (),
+}

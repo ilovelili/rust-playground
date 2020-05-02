@@ -1,0 +1,7 @@
+slice vs vector:
+
+- A slice is a reference - you don't own it, 
+so you can't move it around in memory. 
+
+- A vector is owned - if you have ownership of it, 
+you can move it around all you like and pass out slices of it

@@ -1,0 +1,17 @@
+closure syntax:
+
+let expensive_closure = |num: u32| -> u32 {
+    println!("calculating slowly...");
+    thread::sleep(Duration::from_secs(2));
+    num
+};
+
+function:
+fn add(x: u8) -> u8 {
+    x + 1
+}
+
+closure:
+let add = |x: u8| -> u8 {
+    x + 1
+};

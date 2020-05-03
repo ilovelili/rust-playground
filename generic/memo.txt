@@ -1,0 +1,94 @@
+traits are interfaces (why Rust just rename everything...)
+However, traits can define default behaviors:
+
+// It's ok
+pub trait Summary {
+    fn summarize(&self) -> String;
+}
+
+// Also good
+pub trait Summary {
+    fn summarize(&self) -> String {
+        String::from("(Read more...)")
+    }
+}
+
+
+pub struct NewsArticle {
+    pub headline: String,
+    pub location: String,
+    pub author: String,
+    pub content: String,
+}
+
+impl Summary for NewsArticle {
+    fn summarize(&self) -> String {
+        format!("{}, by {} ({})", self.headline, self.author, self.location)
+    }
+}
+
+----------------------------------------------------
+lifetime:
+
+the following function will fail due to 'this function's return type contains a borrowed value, but the
+signature does not say whether it is borrowed from `a` or `b`'
+
+fn longest(a: &str, b: &str) -> &str {
+    if a.len() > b.len() {
+        a
+    } else {
+        b
+    }
+} 
+
+// we assign a same lifetime here for a and b then the borrow checker will be happy
+fn longest<'a>(a: &'a str, b: &'a str) -> &'a str {
+    if a.len() > b.len() {
+        a
+    } else {
+        b
+    }
+}
+
+The compiler uses three rules to figure out what lifetimes references
+have when there aren’t explicit annotations. 
+
+If the compiler gets to the end of the three rules and there are still references for
+which it can’t figure out lifetimes, the compiler will stop with an error.
+
+- The first rule is that each parameter that is a reference gets its own life-
+time parameter. In other words, a function with one parameter gets one
+lifetime parameter: fn foo<'a>(x: &'a i32) ; a function with two parameters
+gets two separate lifetime parameters: fn foo<'a, 'b>(x: &'a i32, y: &'b i32) ;
+and so on.
+
+The second rule is if there is exactly one input lifetime parameter, that
+lifetime is assigned to all output lifetime parameters: fn foo<'a>(x: &'a i32)
+-> &'a i32 .
+
+The third rule is if there are multiple input lifetime parameters, but one
+of them is &self or &mut self because this is a method, the lifetime of self is
+assigned to all output lifetime parameters.
+
+In other cases we need to annotate the lifetime explicitly.
+
+--------------------------------------------------------------------------------
+One special lifetime we need to discuss is 'static , which denotes the entire
+duration of the program. All string literals have the 'static lifetime, which
+we can annotate as follows:
+
+let s: &'static str = "I have a static lifetime.";
+
+
+--------------------------------------------------------------------------------
+Generic, Trait Bounds, Lifetime together:
+
+fn longest_with_an_announcement<'a, T>(x: &'a str, y: &'a str, ann: T) -> &'a str where T: Display
+{
+    println!("Announcement! {}", ann);
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
+}

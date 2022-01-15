@@ -56,13 +56,13 @@ fn notify(item: &impl Summary) {
 }
 
 // return types implements a trait
-fn summarizable_item() -> impl Summary {
-  NewArticle {
-    title: String::from("today's news"),
-    content: String::from("stock price"),
-    author: String::from("min"),
-  }
-}
+// fn summarizable_item() -> impl Summary {
+//   NewArticle {
+//     title: String::from("today's news"),
+//     content: String::from("stock price"),
+//     author: String::from("min"),
+//   }
+// }
 
 // fn lifetime_v1() {
 //   {

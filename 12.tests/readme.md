@@ -26,8 +26,8 @@ mod tests {
   #[test]
   fn can_hold() {
     let larger = Rectangle::new(100.0, 30.0);
-    let smaller = Rectangle::new(30.0, 10.0);
-    let can_hold = larger.can_hold(&smaller);
+    let smaller = Rectangle::new(30.0, 10.0); // use :: for functions
+    let can_hold = larger.can_hold(&smaller); // use . for methods
     assert!(can_hold);
   }
 }
